@@ -33,6 +33,7 @@ function isValidMove(board, row, col, num) {
   return true;
 }
 
+//Need to make game grid scale with screen size to some extent... For example smallest 30px grid element
 function displayBoard(difficulty) {
   sudokuContainer.innerHTML = "";
   let sudoku = getSudoku(difficulty);
@@ -170,7 +171,52 @@ function applyBoardState(state) {
 }
 
 //Add solve button
+document.getElementById('solve-button').addEventListener('click', solve);
+
+function solve() {
+  let cells = document.querySelectorAll('.cell');
+  // console.log(cells)
+  let solution = document.querySelector('#solution').textContent;
+
+  cells.forEach((cell, i) => {
+    cell.textContent = solution[i];
+  });
+}
+//Add clear board
+document.getElementById('clear-board-button').addEventListener('click', clearBoard);
+
+function clearBoard() {
+  let cells = document.querySelectorAll('.cell');
+
+  cells.forEach((cell, i) => {
+    cell.textContent = '';
+  });
+}
+
 //Add hint button
+document.getElementById('hint-button').addEventListener('click', hint);
+
+function hint() {
+  let cells = document.querySelectorAll('.cell');
+  let solution = document.querySelector('#solution').textContent;
+
+  let startCell = Math.floor(Math.random() * 80);
+  let testCell = startCell;
+  for(let i = 0; i < 81; i++) {
+    if(!cells[testCell].classList.contains('prefilled') || cells[testCell].textContent != solution[testCell]) {
+      cells[testCell].textContent = solution[testCell];
+      cells[testCell].style.backgroundColor = 'orange';
+      return;
+    }
+
+      
+    if(testCell >= 80) {
+      testCell = 0
+    } else {
+      testCell++;
+    }
+  }
+}
 
 function showModal(message) {
   const modal = document.getElementById('error-modal');
