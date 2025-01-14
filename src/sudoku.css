@@ -2,6 +2,9 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 div {
@@ -11,30 +14,33 @@ div {
 .row {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 100%;
-    width: 100%
+    width: 100%;
+    margin: auto;
 }
 
 .column {
     flex: 50%;
     flex-direction: column;
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 360px;
 }
 
 .control {
     display: flex;
     justify-content: center;
     flex-direction: row;
-    padding-top: 20px;
-    gap: 10px;
+    gap: 5px;
 }
 
 .control button {
     display: block;
     width: 100%;
-    max-width: 200px;
+    max-width: 180px;
     margin: 0;
-    padding: 10px;
-    gap: 10px;
+    gap: 5px;
     box-sizing: border-box;
 }
 
@@ -43,7 +49,7 @@ div {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     max-width: 360px;
-    margin: 0 auto;
+    margin: auto;
     aspect-ratio: 1;
 }
 
@@ -69,26 +75,26 @@ div {
 
 #sudoku-container {
     display: grid;
-    grid-template-columns: repeat(9, 40px);
-    grid-template-rows: repeat(9, 40px);
-    gap: 1px;
-    justify-content: center;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 1;
     margin: 20px auto;
-    background-color: none;
+    border: 2px solid #000;
+    justify-content: center;
 }
 
 .cell {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    font-size: 24px;
-    background-color: white;
-    border: 1px solid black;
-    outline: none;
+    border: 1px solid #000;
     justify-content: center;
     align-items: center;
     text-align: center;
     display: flex;
+    background-color: white;
+    font-size: 1.5rem;
+    box-sizing: border-box;
+    aspect-ratio: 1;
 }
 
 .cell:nth-child(9n + 1),
