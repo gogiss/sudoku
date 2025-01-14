@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="sudoku.css">
+</head>
+
+<body>
+    <h1>Sudoku</h1>
+    <form id="controls">
+        <button id="easy-button">Easy</button>
+        <button id="medium-button">Medium</button>
+        <button id="hard-button">Hard</button>
+        <button id="expert-button">Expert</button>
+    </form>
+    <form id="controls">
+        <button id="check-solution">Check Solution</button>
+    </form>
+    <div class="row">
+        <div class="column" id="sudoku-container"></div>
+        <div class="column">
+            <div id="number-pad">
+                <button class="num-button" data-value="1">1</button>
+                <button class="num-button" data-value="2">2</button>
+                <button class="num-button" data-value="3">3</button>
+                <button class="num-button" data-value="4">4</button>
+                <button class="num-button" data-value="5">5</button>
+                <button class="num-button" data-value="6">6</button>
+                <button class="num-button" data-value="7">7</button>
+                <button class="num-button" data-value="8">8</button>
+                <button class="num-button" data-value="9">9</button>
+            </div>
+        </div>
+    </div>
+    <div id="solution"></div>
+</body>
+
+</html>
