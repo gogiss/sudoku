@@ -3,16 +3,15 @@ import { getSudoku } from 'sudoku-gen';
 
 const sudokuContainer = document.getElementById("sudoku-container");
 const numberPad = document.getElementById('number-pad');
-let selectedCell = null;  // Track the currently selected Sudoku cell
-let currentValue = null;  // Store the selected number for input
+let selectedCell = null;
+let currentValue = null;
 
 let sudokuBoard = [];
-
-function generateBlankBoard() {
-  return Array.from({ length: 9 }, () => Array(9).fill(0));
-}
+let sudokuBoardHistory = [];
+let redoStack = [];
 
 // Check if placing a number is valid
+// Unused, but leaving for now as an alternative way to check if solution is good.
 function isValidMove(board, row, col, num) {
   // Check row and column
   for (let i = 0; i < 9; i++) {
@@ -34,16 +33,14 @@ function isValidMove(board, row, col, num) {
   return true;
 }
 
-function displayBoard(difficulty) {  
-  sudokuBoard = generateBlankBoard();
-  sudokuContainer.innerHTML = "";  
+function displayBoard(difficulty) {
+  sudokuContainer.innerHTML = "";
   let sudoku = getSudoku(difficulty);
   let prefilledCells = sudoku.puzzle;
   let i = 0;
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
       const cell = document.createElement('div');
-      cell.type = "text";
       cell.classList.add("cell");
       cell.dataset.row = row;
       cell.dataset.col = col;
@@ -52,6 +49,14 @@ function displayBoard(difficulty) {
         cell.textContent = prefilledCells[i];
         cell.disabled = true;
         cell.classList.add("prefilled");
+        Object.defineProperty(cell, "textContent", {
+          set: function (value) {
+            console.log("Attempt to change textContent is blocked.");
+          },
+          get: function () {
+            return this.innerHTML;
+          }
+        });
       }
       cell.addEventListener('click', () => selectCell(cell));
 
@@ -59,7 +64,9 @@ function displayBoard(difficulty) {
       i++;
     }
   }
-  
+
+  saveBoardState();
+
   let solution = sudoku.solution;
   const solutionDiv = document.getElementById('solution');
   solutionDiv.style.display = 'none';
@@ -77,37 +84,114 @@ function selectCell(cell) {
 numberPad.addEventListener('click', (e) => {
   const button = e.target;
   if (button.classList.contains('num-button')) {
-    currentValue = button.dataset.value;  // Get the selected number
+    currentValue = button.dataset.value;
     if (selectedCell) {
-      selectedCell.textContent = currentValue;  // Set the value in the selected cell
+      selectedCell.textContent = currentValue;
     }
   }
+  saveBoardState();
 });
 
 function startNewGame(difficulty) {
   displayBoard(difficulty);
 }
 
-function checkSolution() {
-  for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-      const value = sudokuBoard[row][col];
-      if (
-        value === 0 ||
-        !isValidMove(sudokuBoard, row, col, value)
-      ) {
-        alert("Solution is incorrect. Keep trying!");
-        return;
-      }
-    }
-  }
-  alert("Congratulations! You solved the Sudoku puzzle!");
+function getBoardValues() {
+  let boardValues = [];
+  let cells = document.querySelectorAll('.cell');
+
+  cells.forEach(cell => {
+    boardValues.push(cell.textContent);
+  });
+
+  return boardValues.join('');
 }
 
-startNewGame("easy");
+function checkSolution() {
+  sudokuBoard = getBoardValues();
+  let solution = document.querySelector('#solution').textContent;
+  if (sudokuBoard == solution) {
+    showModal("Congratulations! You solved the Sudoku puzzle!");
+  } else {
+    showModal("Solution is incorrect. Keep trying!");
+  }
+}
 
 document.getElementById('easy-button').addEventListener('click', () => startNewGame('easy'));
 document.getElementById('medium-button').addEventListener('click', () => startNewGame('medium'));
 document.getElementById('hard-button').addEventListener('click', () => startNewGame('hard'));
 document.getElementById('expert-button').addEventListener('click', () => startNewGame('expert'));
 document.getElementById('check-solution').addEventListener('click', checkSolution);
+document.getElementById('start-game').addEventListener('click', startNewGame('easy'));
+
+//Add undo/redo button
+document.getElementById('undo-button').addEventListener('click', undoLastMove);
+document.getElementById('redo-button').addEventListener('click', redoLastMove);
+
+function saveBoardState() {
+  const currentBoardState = [];
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach(cell => {
+    currentBoardState.push(cell.textContent);
+  });
+
+  sudokuBoardHistory.push(currentBoardState);
+  redoStack = [];
+}
+
+function undoLastMove() {
+  if (sudokuBoardHistory.length > 1) {
+    const currentState = sudokuBoardHistory.pop();
+    redoStack.push(currentState);
+
+    const previousState = sudokuBoardHistory[sudokuBoardHistory.length - 1];
+    applyBoardState(previousState);
+  }
+}
+
+function redoLastMove() {
+  if (redoStack.length > 0) {
+    const redoState = redoStack.pop();
+    sudokuBoardHistory.push(redoState);
+    applyBoardState(redoState);
+  }
+}
+
+function applyBoardState(state) {
+  let index = 0;
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach(cell => {
+    const value = state[index];
+    if (!cell.disabled) {
+      cell.textContent = value;
+    }
+    index++;
+  });
+}
+
+//Add solve button
+//Add hint button
+
+function showModal(message) {
+  const modal = document.getElementById('error-modal');
+  const modalMessage = document.getElementById('modal-message');
+  const closeBtn = document.getElementById('close-modal-btn');
+
+  // Set the message inside the modal
+  modalMessage.textContent = message;
+
+  // Show the modal
+  modal.style.display = 'flex';
+
+  // Close the modal when the user clicks the close button
+  closeBtn.onclick = function () {
+    modal.style.display = 'none';
+  };
+
+  // Close the modal if the user clicks anywhere outside of the modal content
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  };
+}

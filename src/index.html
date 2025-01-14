@@ -9,16 +9,28 @@
 </head>
 
 <body>
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal-btn">&times;</span>
+            <p id="modal-message">Solution is incorrect. Keep trying!</p>
+        </div>
+    </div>
+
     <h1>Sudoku</h1>
-    <form id="controls">
+    <div class="control" id="controls">
+        <button id="check-solution">Check Solution</button>
+        <button id="clear-board">Clear Board</button>
+    </div>
+    <div class="control" id="controls">
         <button id="easy-button">Easy</button>
         <button id="medium-button">Medium</button>
         <button id="hard-button">Hard</button>
         <button id="expert-button">Expert</button>
-    </form>
-    <form id="controls">
-        <button id="check-solution">Check Solution</button>
-    </form>
+    </div>
+    <div class="control" id="controls">
+        <button id="undo-button">Undo</button>
+        <button id="redo-button">Redo</button>
+    </div>
     <div class="row">
         <div class="column" id="sudoku-container"></div>
         <div class="column">
@@ -36,6 +48,7 @@
         </div>
     </div>
     <div id="solution"></div>
+    <button id="start-game">Start Game</button>
 </body>
 
 </html>
