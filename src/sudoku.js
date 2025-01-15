@@ -33,7 +33,6 @@ function isValidMove(board, row, col, num) {
   return true;
 }
 
-//Need to make game grid scale with screen size to some extent... For example smallest 30px grid element
 function displayBoard(difficulty) {
   sudokuContainer.innerHTML = "";
   let sudoku = getSudoku(difficulty);
@@ -124,6 +123,7 @@ document.getElementById('hard-button').addEventListener('click', () => startNewG
 document.getElementById('expert-button').addEventListener('click', () => startNewGame('expert'));
 document.getElementById('check-solution').addEventListener('click', checkSolution);
 document.getElementById('start-game').addEventListener('click', startNewGame('easy'));
+document.getElementById('clear-cell-button').addEventListener('click', clearCell);
 
 //Add undo/redo button
 document.getElementById('undo-button').addEventListener('click', undoLastMove);
@@ -175,11 +175,15 @@ document.getElementById('solve-button').addEventListener('click', solve);
 
 function solve() {
   let cells = document.querySelectorAll('.cell');
-  // console.log(cells)
   let solution = document.querySelector('#solution').textContent;
 
   cells.forEach((cell, i) => {
-    cell.textContent = solution[i];
+    if (!cell.textContent) {
+      if (!cell.classList.contains('prefilled')) {
+        cell.textContent = solution[i];
+        cell.style.backgroundColor = 'green';
+      }
+    }
   });
 }
 //Add clear board
@@ -190,32 +194,35 @@ function clearBoard() {
 
   cells.forEach((cell, i) => {
     cell.textContent = '';
+    cell.style.backgroundColor = 'white';
   });
 }
 
 //Add hint button
 document.getElementById('hint-button').addEventListener('click', hint);
 
+//Some issue in logic. The smaller amount of empty cells the more probable it becomes that hint will not actually input a value somewhere on the board.
 function hint() {
   let cells = document.querySelectorAll('.cell');
   let solution = document.querySelector('#solution').textContent;
+  let emptyCells = [];
 
-  let startCell = Math.floor(Math.random() * 80);
-  let testCell = startCell;
-  for(let i = 0; i < 81; i++) {
-    if(!cells[testCell].classList.contains('prefilled') || cells[testCell].textContent != solution[testCell]) {
-      cells[testCell].textContent = solution[testCell];
-      cells[testCell].style.backgroundColor = 'orange';
-      return;
-    }
-
-      
-    if(testCell >= 80) {
-      testCell = 0
-    } else {
-      testCell++;
+  for (let i = 0; i < 81; i++) {
+    if (!cells[i].textContent) {
+      emptyCells.push(i);
     }
   }
+
+  let cellNumber = getRandom(emptyCells);
+
+  if (cellNumber || cellNumber == 0) {
+    cells[cellNumber].textContent = solution[cellNumber];
+    cells[cellNumber].style.backgroundColor = 'orange';
+  }
+}
+
+function getRandom(list) {
+  return list[Math.floor((Math.random() * list.length))];
 }
 
 function showModal(message) {
@@ -241,3 +248,21 @@ function showModal(message) {
     }
   };
 }
+
+function clearCell() {
+
+  numberPad.addEventListener('click', (e) => {
+    const button = e.target;
+    if (button.classList.contains('clear-cell-button')) {
+      if (selectedCell) {
+        selectedCell.textContent = '';
+      }
+    }
+    saveBoardState();
+  });
+
+}
+
+//Need to display difficulty selected
+//Display if solved correctly on last cell input
+//Timeris

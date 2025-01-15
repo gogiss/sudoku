@@ -1,211 +1,409 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+@media (orientation: portrait) {
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    div {
+        cursor: default;
+    }
+    
+    .control {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        gap: 5px;
+    }
+    
+    .control button {
+        display: block;
+        width: 100%;
+        max-width: 180px;
+        margin: 0;
+        gap: 5px;
+        box-sizing: border-box;
+    }
+    
+    #number-pad {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        max-width: 360px;
+        margin: auto;
+    }
+    
+    .num-button {
+        font-size: 24px;
+        padding: 5px;
+        cursor: pointer;
+        text-align: center;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    
+    .num-button:hover {
+        background-color: #45a049;
+    }
+    
+    .cell.selected {
+        background-color: #f0f8ff;
+    }
+    
+    #sudoku-container {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        grid-template-rows: repeat(9, 1fr);
+        width: 100%;
+        max-width: 360px;
+        aspect-ratio: 1;
+        margin: 20px auto;
+        border: 2px solid #000;
+        justify-content: center;
+    }
+    
+    .cell {
+        border: 1px solid #000;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        display: flex;
+        background-color: white;
+        font-size: 1.5rem;
+        box-sizing: border-box;
+        aspect-ratio: 1;
+    }
+    
+    .cell:nth-child(9n + 1),
+    .cell:nth-child(9n + 4),
+    .cell:nth-child(9n + 7) {
+        border-left: 2px solid black;
+    }
+    
+    .cell:nth-child(3n) {
+        border-right: 2px solid black;
+    }
+    
+    .cell:nth-child(-n + 9) {
+        border-top: 2px solid black;
+    }
+    
+    .cell:nth-child(27n + 1),
+    .cell:nth-child(27n + 2),
+    .cell:nth-child(27n + 3),
+    .cell:nth-child(27n + 4),
+    .cell:nth-child(27n + 5),
+    .cell:nth-child(27n + 6),
+    .cell:nth-child(27n + 7),
+    .cell:nth-child(27n + 8),
+    .cell:nth-child(27n + 9) {
+        border-top: 2px solid black;
+    }
+    
+    .cell:nth-last-child(-n + 9) {
+        border-bottom: 2px solid black;
+    }
+    
+    .cell:focus {
+        background-color: #d0f0d0;
+    }
+    
+    .prefilled {
+        background-color: #f0f0f0;
+        font-weight: bold;
+    }
+    
+    .cell.prefilled.selected {
+        background-color: #f0f0f0;
+    }
+    
+    #solution {
+        display: none;
+    }
+    
+    #start-game {
+        display: none;
+    }
+    
+    #controls {
+        margin-top: 20px;
+    }
+    
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 0 5px;
+        cursor: pointer;
+        border: none;
+        background-color: #007BFF;
+        color: white;
+        border-radius: 5px;
+    }
+    
+    button:hover {
+        background-color: #0056b3;
+    }
+    
+    /* Modal Styles */
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Semi-transparent background */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        width: 300px;
+        text-align: center;
+    }
+    
+    .close-btn {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    
+    .close-btn:hover,
+    .close-btn:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 }
 
-div {
-    cursor: default;
-}
+/* Landscape mode styles */
+@media (orientation: landscape) {
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
 
-.row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    margin: auto;
-}
+    div {
+        cursor: default;
+    }
 
-.column {
-    flex: 50%;
-    flex-direction: column;
-    aspect-ratio: 1;
-    width: 100%;
-    max-width: 360px;
-}
+    .row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        margin: auto;
+    }
 
-.control {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    gap: 5px;
-}
+    .column {
+        flex: 50%;
+        flex-direction: column;
+        aspect-ratio: 1;
+        width: 100%;
+        max-width: 360px;
+    }
 
-.control button {
-    display: block;
-    width: 100%;
-    max-width: 180px;
-    margin: 0;
-    gap: 5px;
-    box-sizing: border-box;
-}
+    .control {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        gap: 5px;
+    }
 
-#number-pad {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    max-width: 360px;
-    margin: auto;
-    aspect-ratio: 1;
-}
+    .control button {
+        display: block;
+        width: 100%;
+        max-width: 180px;
+        margin: 0;
+        gap: 5px;
+        box-sizing: border-box;
+    }
 
-.num-button {
-    font-size: 24px;
-    padding: 5px;
-    cursor: pointer;
-    text-align: center;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+    #number-pad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        max-width: 360px;
+        margin: auto;
+        aspect-ratio: 1;
+    }
 
-.num-button:hover {
-    background-color: #45a049;
-}
+    .num-button {
+        font-size: 24px;
+        padding: 5px;
+        cursor: pointer;
+        text-align: center;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
 
-.cell.selected {
-    background-color: #f0f8ff;
-}
+    .num-button:hover {
+        background-color: #45a049;
+    }
 
-#sudoku-container {
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    grid-template-rows: repeat(9, 1fr);
-    width: 100%;
-    max-width: 360px;
-    aspect-ratio: 1;
-    margin: 20px auto;
-    border: 2px solid #000;
-    justify-content: center;
-}
+    .cell.selected {
+        background-color: #f0f8ff;
+    }
 
-.cell {
-    border: 1px solid #000;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    display: flex;
-    background-color: white;
-    font-size: 1.5rem;
-    box-sizing: border-box;
-    aspect-ratio: 1;
-}
+    #sudoku-container {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        grid-template-rows: repeat(9, 1fr);
+        width: 100%;
+        max-width: 360px;
+        aspect-ratio: 1;
+        margin: 20px auto;
+        border: 2px solid #000;
+        justify-content: center;
+    }
 
-.cell:nth-child(9n + 1),
-.cell:nth-child(9n + 4),
-.cell:nth-child(9n + 7) {
-    border-left: 2px solid black;
-}
+    .cell {
+        border: 1px solid #000;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        display: flex;
+        background-color: white;
+        font-size: 1.5rem;
+        box-sizing: border-box;
+        aspect-ratio: 1;
+    }
 
-.cell:nth-child(3n) {
-    border-right: 2px solid black;
-}
+    .cell:nth-child(9n + 1),
+    .cell:nth-child(9n + 4),
+    .cell:nth-child(9n + 7) {
+        border-left: 2px solid black;
+    }
 
-.cell:nth-child(-n + 9) {
-    border-top: 2px solid black;
-}
+    .cell:nth-child(3n) {
+        border-right: 2px solid black;
+    }
 
-.cell:nth-child(27n + 1),
-.cell:nth-child(27n + 2),
-.cell:nth-child(27n + 3),
-.cell:nth-child(27n + 4),
-.cell:nth-child(27n + 5),
-.cell:nth-child(27n + 6),
-.cell:nth-child(27n + 7),
-.cell:nth-child(27n + 8),
-.cell:nth-child(27n + 9) {
-    border-top: 2px solid black;
-}
+    .cell:nth-child(-n + 9) {
+        border-top: 2px solid black;
+    }
 
-.cell:nth-last-child(-n + 9) {
-    border-bottom: 2px solid black;
-}
+    .cell:nth-child(27n + 1),
+    .cell:nth-child(27n + 2),
+    .cell:nth-child(27n + 3),
+    .cell:nth-child(27n + 4),
+    .cell:nth-child(27n + 5),
+    .cell:nth-child(27n + 6),
+    .cell:nth-child(27n + 7),
+    .cell:nth-child(27n + 8),
+    .cell:nth-child(27n + 9) {
+        border-top: 2px solid black;
+    }
 
-.cell:focus {
-    background-color: #d0f0d0;
-}
+    .cell:nth-last-child(-n + 9) {
+        border-bottom: 2px solid black;
+    }
 
-.prefilled {
-    background-color: #f0f0f0;
-    font-weight: bold;
-}
+    .cell:focus {
+        background-color: #d0f0d0;
+    }
 
-.cell.prefilled.selected {
-    background-color: #f0f0f0;
-}
+    .prefilled {
+        background-color: #f0f0f0;
+        font-weight: bold;
+    }
 
-#solution {
-    display: none;
-}
+    .cell.prefilled.selected {
+        background-color: #f0f0f0;
+    }
 
-#start-game {
-    display: none;
-}
+    #solution {
+        display: none;
+    }
 
-#controls {
-    margin-top: 20px;
-}
+    #start-game {
+        display: none;
+    }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin: 0 5px;
-    cursor: pointer;
-    border: none;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 5px;
-}
+    #controls {
+        margin-top: 20px;
+    }
 
-button:hover {
-    background-color: #0056b3;
-}
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 0 5px;
+        cursor: pointer;
+        border: none;
+        background-color: #007BFF;
+        color: white;
+        border-radius: 5px;
+    }
 
-/* Modal Styles */
-.modal {
-    display: none;
-    /* Hidden by default */
-    position: fixed;
-    z-index: 1;
-    /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    /* Semi-transparent background */
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
+    button:hover {
+        background-color: #0056b3;
+    }
 
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    width: 300px;
-    text-align: center;
-}
+    /* Modal Styles */
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Semi-transparent background */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
 
-.close-btn {
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-}
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        width: 300px;
+        text-align: center;
+    }
 
-.close-btn:hover,
-.close-btn:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+    .close-btn {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 }
