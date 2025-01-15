@@ -130,6 +130,10 @@
         display: none;
     }
     
+    #clear-cell-button {
+        display: none;
+    }
+    
     #controls {
         margin-top: 20px;
     }
@@ -342,6 +346,10 @@
     }
 
     #start-game {
+        display: none;
+    }
+    
+    #clear-cell-button {
         display: none;
     }
 
