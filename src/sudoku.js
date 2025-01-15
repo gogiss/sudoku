@@ -201,7 +201,6 @@ function clearBoard() {
 //Add hint button
 document.getElementById('hint-button').addEventListener('click', hint);
 
-//Some issue in logic. The smaller amount of empty cells the more probable it becomes that hint will not actually input a value somewhere on the board.
 function hint() {
   let cells = document.querySelectorAll('.cell');
   let solution = document.querySelector('#solution').textContent;
@@ -219,6 +218,8 @@ function hint() {
     cells[cellNumber].textContent = solution[cellNumber];
     cells[cellNumber].style.backgroundColor = 'orange';
   }
+
+  saveBoardState();
 }
 
 function getRandom(list) {
@@ -265,4 +266,5 @@ function clearCell() {
 
 //Need to display difficulty selected
 //Display if solved correctly on last cell input
+//    On each num-pad input check if all cells are filled and call check-solution method?
 //Timeris
